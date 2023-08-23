@@ -38,6 +38,5 @@ class MRUCache(BaseCaching):
         if key is not None and key in self.cache_data:
             self.recent = []
             self.recent.append(key)
-            print("THE RECENT", self.recent)
             return self.cache_data[key]
         return None
