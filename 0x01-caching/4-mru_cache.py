@@ -12,6 +12,7 @@ class MRUCache(BaseCaching):
         initialize
         """
         super().__init__()
+        self.recent = []
 
     def put(self, key, item):
         """
@@ -20,12 +21,11 @@ class MRUCache(BaseCaching):
         if key is not None and item is not None:
             # Check if the cache is full
             if len(self.cache_data) >= self.MAX_ITEMS:
-                # Get the most recently used key (MRU)
-                mru_key = next(reversed(self.cache_data))
-                # Remove the MRU item from the cache
-                del self.cache_data[mru_key]
-                print(f"DISCARD: {mru_key}")
-            # Add the new item to the cache
+                last_key = list(self.cache_data)[-1]
+                if self.recent:
+                    last_key = self.recent.pop()
+                del self.cache_data[last_key]
+                print(f"DISCARD: {last_key}")
             self.cache_data[key] = item
 
     def get(self, key):
@@ -33,5 +33,8 @@ class MRUCache(BaseCaching):
         get key
         """
         if key is not None and key in self.cache_data:
+            self.recent = []
+            self.recent.append(key)
+            print("THE RECENT", self.recent)
             return self.cache_data[key]
         return None
