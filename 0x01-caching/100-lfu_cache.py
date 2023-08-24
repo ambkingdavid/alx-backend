@@ -48,7 +48,7 @@ class LFUCache(BaseCaching):
             self.order.append(key)
             # Add the key to lfu frequency
             self.frequency[key] = 0
-        else:
+        elif (key is not None and item is not None and key in data):
             # Add the new item to the cache
             self.cache_data[key] = item
             # Add the key to the LRU order
